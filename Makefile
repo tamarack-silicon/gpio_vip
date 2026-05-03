@@ -8,6 +8,6 @@ REPO_DEP :=
 TESTS_TOP_NAME := gpio_vip_tests_top
 
 # Default test name
-TEST := base_test
+TEST := gpio_vip_single_base_test
 
 include ip/flows/verification-ip.mk

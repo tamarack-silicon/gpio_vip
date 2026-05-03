@@ -1,1 +1,5 @@
 gpio_vip_tests_top.sv
+
+gpio_vip_tests_env_pkg.sv
+gpio_vip_single_base_test_pkg.sv
+gpio_vip_dual_base_test_pkg.sv
