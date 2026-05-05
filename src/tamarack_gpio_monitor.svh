@@ -16,11 +16,7 @@ class tamarack_gpio_monitor #(parameter integer WIDTH = 32) extends uvm_monitor;
 		super.build_phase(phase);
 		`uvm_info("TAMARACK_GPIO_MONITOR", $sformatf("Tamarack Silicon Project GPIO Monitor %s , WIDTH = %0d", get_full_name(), WIDTH), UVM_HIGH)
 
-`ifndef VERILATOR
 		if(!uvm_config_db#(virtual tamarack_gpio_if#(.WIDTH(WIDTH)))::get(null, get_parent().get_full_name(), "gpio_vif", gpio_vif)) begin
-`else
-		if(!uvm_config_db#(virtual tamarack_gpio_if)::get(null, get_parent().get_full_name(), "gpio_vif", gpio_vif)) begin
-`endif
 			`uvm_fatal("TAMARACK_GPIO_MONITOR", "Could not get virtual interface from config_db")
 		end
 
@@ -28,21 +24,25 @@ class tamarack_gpio_monitor #(parameter integer WIDTH = 32) extends uvm_monitor;
 	endfunction // build_phase
 
 	virtual task run_phase(uvm_phase phase);
-		automatic tamarack_gpio_item#(.WIDTH(WIDTH)) m_item = tamarack_gpio_item#(.WIDTH(WIDTH))::type_id::create("gpio_item");
+		tamarack_gpio_item#(.WIDTH(WIDTH)) m_item;
 
 		super.run_phase(phase);
 
 		forever begin
 
-			@(m_item.gpio_in_data);
+			@(gpio_vif.gpio_in_data or gpio_vif.gpio_out_data or gpio_vif.gpio_out_enable);
+			m_item = tamarack_gpio_item#(.WIDTH(WIDTH))::type_id::create("gpio_item");
 			m_item.gpio_out_enable = gpio_vif.gpio_out_enable;
 			m_item.gpio_out_data = gpio_vif.gpio_out_data;
 			m_item.gpio_in_data = gpio_vif.gpio_in_data;
 
+			`uvm_info("TAMARACK_GPIO_MONITOR", "Received item:", UVM_HIGH)
+			m_item.print();
+
 			mon_analysis_port.write(m_item);
 
 		end
-	endtask // run_task
+	endtask // run_phase
 
 endclass // tamarack_gpio_monitor
 
