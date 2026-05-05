@@ -20,11 +20,14 @@ class tamarack_gpio_driver #(parameter integer WIDTH = 32) extends uvm_driver#(t
 	endfunction // build_phase
 
 	virtual task run_phase(uvm_phase phase);
+		tamarack_gpio_item#(.WIDTH(WIDTH)) m_item;
+
 		super.run_phase(phase);
+
 		forever begin
-			tamarack_gpio_item#(.WIDTH(WIDTH)) m_item;
-			`uvm_info("TAMARACK_GPIO_DRIVER", $sformatf("Waiting for item"), UVM_HIGH)
 			seq_item_port.get_next_item(m_item);
+			`uvm_info("TAMARACK_GPIO_DRIVER", "Driving item:", UVM_HIGH)
+			m_item.print();
 			gpio_vif.gpio_out_data = m_item.gpio_out_data;
 			gpio_vif.gpio_out_enable = m_item.gpio_out_enable;
 			seq_item_port.item_done();
