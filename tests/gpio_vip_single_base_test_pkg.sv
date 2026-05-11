@@ -27,6 +27,13 @@ package gpio_vip_single_base_test_pkg;
 			end
 		endfunction // build_phase
 
+		virtual function void end_of_elaboration_phase(uvm_phase phase);
+			super.end_of_elaboration_phase(phase);
+
+			`uvm_info("GPIO_VIP_SINGLE_BASE_TEST", "Test topology:", UVM_HIGH)
+			this.print();
+		endfunction // end_of_elaboration_phase
+
 		virtual task run_phase(uvm_phase phase);
 			phase.raise_objection(phase);
 

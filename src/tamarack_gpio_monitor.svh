@@ -10,7 +10,7 @@ class tamarack_gpio_monitor #(parameter integer WIDTH = 32) extends uvm_monitor;
 	endfunction // new
 
 	uvm_analysis_port#(tamarack_gpio_item#(.WIDTH(WIDTH))) mon_analysis_port;
-	virtual tamarack_gpio_if gpio_vif;
+	virtual tamarack_gpio_if#(.WIDTH(WIDTH)) gpio_vif;
 
 	virtual function void build_phase(uvm_phase phase);
 		super.build_phase(phase);

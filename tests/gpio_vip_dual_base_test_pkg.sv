@@ -21,6 +21,13 @@ package gpio_vip_dual_base_test_pkg;
 			m_env = gpio_vip_dual_tests_env::type_id::create("m_env", this);
 		endfunction // build_phase
 
+		virtual function void end_of_elaboration_phase(uvm_phase phase);
+			super.end_of_elaboration_phase(phase);
+
+			`uvm_info("GPIO_VIP_DUAL_BASE_TEST", "Test topology:", UVM_HIGH)
+			this.print();
+		endfunction // end_of_elaboration_phase
+
 		virtual task run_phase(uvm_phase phase);
 			phase.raise_objection(phase);
 
