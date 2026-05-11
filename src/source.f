@@ -1,2 +1,4 @@
-gpio_if.sv
-gpio_agent_pkg.sv
++incdir+.
+
+tamarack_gpio_if.sv
+tamarack_gpio_agent_pkg.sv
